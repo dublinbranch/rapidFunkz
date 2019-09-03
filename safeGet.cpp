@@ -32,4 +32,34 @@ const rapidjson::GenericValue<rapidjson::UTF8<> >& rapidfunkz::safeGet(const rap
 }
 
 
+SMART_ENUM(inner, uint) {
+	SM_ENUM_ELEM(kBoolFlag, 0x0008);
+	SM_ENUM_ELEM(kNumberFlag, 0x0010);
+	SM_ENUM_ELEM(kIntFlag, 0x0020);
+	SM_ENUM_ELEM(kUintFlag, 0x0040);
+	SM_ENUM_ELEM(kInt64Flag, 0x0080);
+	SM_ENUM_ELEM(kUint64Flag, 0x0100);
+	SM_ENUM_ELEM(kDoubleFlag, 0x0200);
+	SM_ENUM_ELEM(kStringFlag, 0x0400);
+	SM_ENUM_ELEM(kCopyFlag, 0x0800);
+	SM_ENUM_ELEM(kInlineStrFlag, 0x1000);
+};
+
+
+const QString check0(uint v) {
+	QStringList buf;
+	for (auto&& scan : inner::values()) {
+		if (v & scan.to_integral()) {
+			buf.append(scan.to_string());
+		}
+	}
+	return buf.join(",");
+}
+
+//auto     type2 = check0(v.getFlag());
+/* add in document.h line 1731
+	const uint16_t getFlag() const {
+		return data_.f.flags;
+	}
+	*/
 
