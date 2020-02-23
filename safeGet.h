@@ -10,4 +10,5 @@ public:
 	static const rapidjson::GenericValue<rapidjson::UTF8<>> EmptyString;
 	static const rapidjson::GenericValue<rapidjson::UTF8<>> ZeroDouble;
 	static const rapidjson::GenericValue<rapidjson::UTF8<>> ZeroInt;
+	//IS ARRAY IS complex and annoyng
 };
