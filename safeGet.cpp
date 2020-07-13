@@ -25,8 +25,8 @@ rapidjson::GenericValue<rapidjson::UTF8<>> zeroIntInit() {
 
 const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroString  = zeroStringInit();
 const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::EmptyString = emptyStringInit();
-const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroDouble        = zeroDoubleInit();
-const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroInt        = zeroIntInit();
+const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroDouble  = zeroDoubleInit();
+const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroInt     = zeroIntInit();
 
 const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapidjson::GenericValue<rapidjson::UTF8<>>& line, const char* name, const rapidjson::GenericValue<rapidjson::UTF8<>>& defaultVal) {
 	auto iter = line.FindMember(name);
@@ -49,7 +49,6 @@ const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapi
 //	SM_ENUM_ELEM(kInlineStrFlag, 0x1000);
 //};
 
-
 //const QString check0(uint v) {
 //	QStringList buf;
 //	for (auto&& scan : inner::values()) {
@@ -66,5 +65,4 @@ const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapi
 		return data_.f.flags;
 	}
 	*/
-
 

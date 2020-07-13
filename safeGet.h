@@ -15,12 +15,20 @@ class rapidfunkz {
 	static const rapidjson::GenericValue<rapidjson::UTF8<>>  ZeroInt;
 	//IS ARRAY IS complex and annoyng
 };
-
+/**
+ * @brief jsonValue
+ * use like 
+ * auto& data = static_cast<JSafe&>(line["insights"]["data"].GetArray()[0]);
+ * data.sfGet<double>("key");
+ */
 typedef rapidjson::GenericValue<rapidjson::UTF8<>> jsonValue;
 class JSafe : public jsonValue {
       public:
+	JSafe& operator=(const JSafe&) = delete;
+	JSafe(const JSafe&)            = delete;
+
 	template <typename V>
-	V sfGet(const char* key) const {
+	V getta(const char* key) const {
 		static_assert(std::is_arithmetic<V>::value, "This function can be used only for aritmetic types");
 		auto iter = this->FindMember(key);
 		if (iter != this->MemberEnd()) {
@@ -35,7 +43,7 @@ class JSafe : public jsonValue {
 				auto   qb = QByteArray::fromRawData(value.GetString(), value.GetStringLength());
 				if constexpr (std::is_floating_point<V>::value) {
 					res = qb.toDouble(&ok);
-				}else if constexpr (std::is_signed<V>::value) {
+				} else if constexpr (std::is_signed<V>::value) {
 					res = qb.toLongLong(&ok);
 				} else {
 					res = qb.toULongLong(&ok);
@@ -53,11 +61,26 @@ class JSafe : public jsonValue {
 			return 0;
 		}
 	}
+	template <typename V>
+	bool getta(const char* key, V& value) const {
+		auto iter = this->FindMember(key);
+		if (iter == this->MemberEnd()) {
+			return false;
+		}
+		value = getta<V>(key);
+		return true;
+	}
+	template <typename V>
+	static V getta(const jsonValue& json, const char* key) {
+		return static_cast<const JSafe&>(json).getta<V>(key);
+	}
+	template <typename V>
+	static bool getta(const jsonValue& json, const char* key, V& value) {
+		auto iter = json.FindMember(key);
+		if (iter == json.MemberEnd()) {
+			return false;
+		}
+		value = JSafe::getta<V>(json, key);
+		return true;
+	}
 };
-
-//standalone
-template <typename K>
-K jsonGet(const jsonValue& line, const char* key) {
-	const JSafe& j2 = static_cast<const JSafe&>(line);
-	return j2.sfGet<K>(key);
-}
