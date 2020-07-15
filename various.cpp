@@ -25,4 +25,5 @@ QString printType(rapidjson::Type t) {
 		return "number";
 		break;
 	}
+	return QString("unsupported type");
 }
