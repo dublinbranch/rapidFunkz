@@ -29,6 +29,9 @@ const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroDouble  = zeroD
 const rapidjson::GenericValue<rapidjson::UTF8<>> rapidfunkz::ZeroInt     = zeroIntInit();
 
 const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapidjson::GenericValue<rapidjson::UTF8<>>& line, const char* name, const rapidjson::GenericValue<rapidjson::UTF8<>>& defaultVal) {
+	if (!line.IsObject()) {
+		return defaultVal;
+	}
 	auto iter = line.FindMember(name);
 	if (iter == line.MemberEnd()) {
 		return defaultVal;
@@ -65,4 +68,3 @@ const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapi
 		return data_.f.flags;
 	}
 	*/
-
