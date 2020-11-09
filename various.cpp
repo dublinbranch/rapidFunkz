@@ -1,6 +1,14 @@
 #include "various.h"
+#include "rapidjson/cursorstreamwrapper.h"
+#include "rapidjson/includeMe.h"
+#include "rapidjson/pointer.h"
+#include "rapidjson/prettywriter.h"
+#include <QDebug>
+#define QSL(str) QStringLiteral(str)
 
 using namespace rapidjson;
+using namespace std;
+
 QString printType(rapidjson::Type t) {
 	switch (t) {
 	case Type::kNullType:
@@ -26,4 +34,25 @@ QString printType(rapidjson::Type t) {
 		break;
 	}
 	return QString("unsupported type");
+}
+
+JsonDecoder parse(const QByteArray& raw, bool quiet) {
+	JsonDecoder res;
+	res.raw  = raw;
+	res.json = std::make_shared<rapidjson::Document>();
+	rapidjson::StringStream                                 ss(raw.constData());
+	rapidjson::CursorStreamWrapper<rapidjson::StringStream> csw(ss);
+	res.json->ParseStream(csw);
+	if (res.json->HasParseError()) {
+		res.valid  = false;
+		res.column = csw.GetColumn();
+		res.line   = csw.GetLine();
+		if (!quiet) {
+			auto msg = QSL("\x1B[33mProblem parsing json on line: %1 , pos: %2\x1B[0m").arg(csw.GetLine()).arg(csw.GetColumn());
+			throw msg;
+		}
+	} else {
+		res.valid = true;
+	}
+	return res;
 }

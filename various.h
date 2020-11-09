@@ -1,9 +1,17 @@
-#ifndef VARIOUS_H
-#define VARIOUS_H
+#pragma once
 
-#include <QString>
 #include "rapidjson/includeMe.h"
+#include <QString>
+#include <memory>
 
 QString printType(rapidjson::Type t);
 
-#endif // VARIOUS_H
+struct JsonDecoder {
+	std::shared_ptr<rapidjson::Document> json = nullptr;
+
+	QByteArray raw;
+	size_t     line   = 0;
+	size_t     column = 0;
+	bool       valid  = false;
+};
+JsonDecoder parse(const QByteArray& raw, bool quiet = false);
