@@ -48,7 +48,9 @@ JsonDecoder parse(const QByteArray& raw, bool quiet) {
 		res.column = csw.GetColumn();
 		res.line   = csw.GetLine();
 		if (!quiet) {
-			auto msg = QSL("\x1B[33mProblem parsing json on line: %1 , pos: %2\x1B[0m").arg(csw.GetLine()).arg(csw.GetColumn());
+			auto jsonPart = QString(raw);
+			jsonPart.truncate(256);
+			auto msg = QSL("Problem parsing json on line: %1 , pos: %2 \n Json was like %3").arg(csw.GetLine()).arg(csw.GetColumn()).arg(jsonPart);
 			throw msg;
 		}
 	} else {
