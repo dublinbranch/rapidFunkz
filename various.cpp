@@ -49,7 +49,7 @@ JsonDecoder parse(const QByteArray& raw, bool quiet) {
 		res.line   = csw.GetLine();
 		if (!quiet) {
 			auto jsonPart = QString(raw);
-			jsonPart.truncate(256);
+			jsonPart.truncate(2048);
 			auto msg = QSL("Problem parsing json on line: %1 , pos: %2 \n Json was like %3").arg(csw.GetLine()).arg(csw.GetColumn()).arg(jsonPart);
 			throw msg;
 		}
