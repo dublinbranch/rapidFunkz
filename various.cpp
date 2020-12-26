@@ -51,6 +51,7 @@ JsonDecoder parse(const QByteArray& raw, bool quiet) {
 			auto jsonPart = QString(raw);
 			jsonPart.truncate(2048);
 			res.msg = QSL("Problem parsing json on line: %1 , pos: %2 \n Json was like %3").arg(csw.GetLine()).arg(csw.GetColumn()).arg(jsonPart);
+			throw res.msg;
 		}
 	} else {
 		res.valid = true;
