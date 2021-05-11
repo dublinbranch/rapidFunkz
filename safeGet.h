@@ -27,6 +27,10 @@ class JSafe : public jsonValue {
 	JSafe& operator=(const JSafe&) = delete;
 	JSafe(const JSafe&)            = delete;
 
+	static JSafe getDummy(){
+		return JSafe();
+	}
+
 	template <typename V>
 	V getta(const char* key) const {
 		static_assert(std::is_arithmetic<V>::value, "This function can be used only for aritmetic types");
@@ -83,4 +87,7 @@ class JSafe : public jsonValue {
 		value = JSafe::getta<V>(json, key);
 		return true;
 	}
+private:
+	JSafe();
+	bool dummy = false;
 };

@@ -68,3 +68,7 @@ const rapidjson::GenericValue<rapidjson::UTF8<>>& rapidfunkz::safeGet(const rapi
 		return data_.f.flags;
 	}
 	*/
+
+JSafe::JSafe(){
+	dummy = true;
+}
